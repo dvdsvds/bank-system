@@ -16,11 +16,11 @@ int main() {
         std::cin >> choice;
         std::cin.ignore();
 
+        Account::OwnerInfo oi;
         if(choice == 1) {
             if(accountList.size() > 5) {
                 std::cout << "Can't create new account" << std::endl;
             } else {
-                Account::OwnerInfo oi;
                 int banknum;
                 std::string name, phone, address, secret;
 
@@ -55,14 +55,36 @@ int main() {
                 ac.print();
             }
         } else if(choice == 3) { // deposit
-            double amount;
+
             if(accountList.empty()) {
                 std::cout << "There is no available account. Please create account." << std::endl;
             } else {
-                
-                std::cout << "Amount to deposit:";
-                std::cin >> amount;
-                std::cin.ignore();
+                std::string accountNumber;
+                std::cout << "Account Number:";
+                std::getline(std::cin, accountNumber);
+
+                bool accountFound = false;        
+
+                for(auto& ac : accountList) {
+                    if(accountNumber == ac.getAccountNumber()) {
+                        double amount;
+                        std::cout << "Amount to deposit : ";
+                        std::cin >> amount;
+                        std::cin.ignore();
+
+                        ac.deposit(amount);
+                        std::cout << amount << "was successfully deposited -> " << accountNumber << std::endl;
+                        std::cout << "Balance:" << ac.getBalance() << std::endl;
+                        accountFound = true;
+                        break;
+                    }
+                }
+
+                if(!accountFound) {
+                    std::cout << "Couldn't find the account:" << accountNumber << std::endl;  
+                    std::cout << "Please try again." << std::endl;
+                }
+
             }
         } else if(choice == 4) { // withdraw
 
