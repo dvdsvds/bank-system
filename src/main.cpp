@@ -68,7 +68,7 @@ int main() {
                 for(auto& ac : accountList) {
                     if(accountNumber == ac.getAccountNumber()) {
                         double amount;
-                        std::cout << "Amount to deposit : ";
+                        std::cout << "Amount to deposit:";
                         std::cin >> amount;
                         std::cin.ignore();
 
@@ -87,6 +87,32 @@ int main() {
 
             }
         } else if(choice == 4) { // withdraw
+            std::string accountNumber;
+            std::cout << "Account Number:";
+            std::getline(std::cin, accountNumber);
+            
+            bool accountFound = false;
+
+            for(auto& ac : accountList) {
+                if(accountNumber == ac.getAccountNumber()) {
+                    double amount;
+                    std::cout << "Amount to withdraw:";
+                    std::cin >> amount;
+                    std::cin.ignore();
+
+                    if(ac.withdraw(amount)) {
+                        std::cout << amount << "was successfully withdrawed -> " << accountNumber << std::endl;
+                        std::cout << "Balance:" << ac.getBalance() << std::endl;
+                        accountFound = true;
+                        break;
+                    }
+                }
+            }
+
+            if(!accountFound) {
+                std::cout << "Couldn't fine the account:" << accountNumber << std::endl;
+                std::cout << "Please try again." << std::endl;
+            }
 
         } else if(choice == 5) { // exit
             break;
